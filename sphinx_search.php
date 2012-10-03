@@ -128,6 +128,12 @@ function sphinx_search_action($arrSearch)
 
 	// get the messages we found
 	$found_messages = phorum_db_get_message(array_keys($search_msg_ids), 'message_id', true);
+	foreach ($found_messages as  $id => $d) {
+		if ($d['status'] != PHORUM_STATUS_APPROVED) {
+			unset($found_messages[$id]);
+			$results['total_found']--;
+		}
+	}
 
 	// sort them in reverse order of the message_id to automagically sort them by date desc this way
 	krsort($found_messages);
